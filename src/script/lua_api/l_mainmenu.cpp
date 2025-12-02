@@ -218,7 +218,36 @@ int ModApiMainMenu::l_set_clouds(lua_State *L)
 
 	return 0;
 }
+/******************************************************************************/
+int ModApiMainMenu::l_set_clouds_color(lua_State* L)
+{
+	GUIEngine* engine = getGuiEngine(L);
+	sanity_check(engine != NULL);
 
+	std::string value = readParam<std::string>(L, 1);
+	video::SColor color = video::SColor();
+	parseColorString(value, color, false);
+
+	engine->setMainMenuCloudsColor(color);
+
+	return 0;
+}
+
+
+/******************************************************************************/
+int ModApiMainMenu::l_set_sky_color(lua_State* L)
+{
+	GUIEngine* engine = getGuiEngine(L);
+	sanity_check(engine != NULL);
+
+	std::string value = readParam<std::string>(L, 1);
+	video::SColor color = video::SColor();
+	parseColorString(value, color, false);
+
+	engine->setMainMenuSkyColor(color);
+
+	return 0;
+}
 /******************************************************************************/
 int ModApiMainMenu::l_get_textlist_index(lua_State *L)
 {
