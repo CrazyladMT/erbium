@@ -594,7 +594,7 @@ void Server::start()
 		R"(| |__   _ __| |__  _ _   _ _ __ ___  )",
 		R"(|  __| | '__| '_ \| | | | | '_ ` _ \ )",
 		R"(| |____| |  | |_) | | |_| | | | | | |)",
-		R"(|______|_|  |_.__/|_|\__,_|_| |_| |_|)"
+		R"(|______|_|  |_.__/|_|\__,_|_| |_| |_|)",
 	};
 	if (!m_admin_chat) {
 		// we're not printing to rawstream to avoid it showing up in the logs.
