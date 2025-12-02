@@ -310,7 +310,7 @@ void GUIEngine::run()
 		driver->getFog(fog_color, fog_type, fog_start, fog_end, fog_density,
 				fog_pixelfog, fog_rangefog);
 
-		driver->setFog(RenderingEngine::MENU_SKY_COLOR, fog_type, fog_start,
+	driver->setFog(m_rendering_engine->getMenuSkyColor(), fog_type, fog_start,
 				fog_end, fog_density, fog_pixelfog, fog_rangefog);
 	}
 
@@ -403,9 +403,24 @@ GUIEngine::~GUIEngine()
 /******************************************************************************/
 void GUIEngine::drawClouds(float dtime)
 {
+	g_menuclouds->update(v3f(0, 0, 0), m_rendering_engine->getMenuCloudsColor());
 	g_menuclouds->step(dtime * 3);
 	g_menucloudsmgr->drawAll();
 }
+
+/******************************************************************************/
+void GUIEngine::setMainMenuCloudsColor
+{
+m_rendering_engine->setMenuCloudsColor(color);
+}
+
+/******************************************************************************/
+void GUIEngine::setMainMenuSkyColor(video::SColor& color)
+{
+	m_rendering_engine->setMenuSkyColor(color);
+}
+
+
 
 /******************************************************************************/
 void GUIEngine::setFormspecPrepend(const std::string &fs)
@@ -425,7 +440,7 @@ void GUIEngine::drawBackground(video::IVideoDriver *driver)
 
 	/* If no texture, draw background of solid color */
 	if(!texture){
-		video::SColor color(255,80,58,37);
+		video::SColor color = m_rendering_engine->getMenuSkyColor();
 		core::rect<s32> rect(0, 0, screensize.X, screensize.Y);
 		driver->draw2DRectangle(color, rect, NULL);
 		return;
