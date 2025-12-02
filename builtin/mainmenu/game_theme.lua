@@ -83,8 +83,7 @@ function mm_game_theme.set_game(gamedetails)
 	end
 
 	if not have_bg then
-			core.set_clouds(core.settings:get_bool("menu_clouds"))
-		end
+		core.set_clouds(core.settings:get_bool("menu_clouds"))
 	end
 end
 
