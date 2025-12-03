@@ -111,13 +111,16 @@ class GameGlobalShaderUniformSetter : public IShaderUniformSetter
 		m_volumetric_light_strength_pixel{"volumetricLightStrength"};
 
 	bool m_fullbright_enabled;
-	float m_fullbright_factor;
-	CachedPixelShaderSetting<float> m_fullbright_factor_pixel{"fullbrightFactor"};
+	float m_fullbright_entity_factor;
+	float m_fullbright_node_factor;
+	CachedPixelShaderSetting<float> m_fullbright_entity_factor_pixel{"fullbrightEntityFactor"};
+	CachedPixelShaderSetting<float> m_fullbright_node_factor_pixel{"fullbrightNodeFactor"};
 
-	static constexpr std::array<const char*, 3> SETTING_CALLBACKS = {
+	static constexpr std::array<const char*, 4> SETTING_CALLBACKS = {
 		"exposure_compensation",
 		"fullbright",
-		"fullbright_factor",
+		"fullbright_entity_factor",
+		"fullbright_node_factor",
 	};
 
 public:
@@ -129,8 +132,11 @@ public:
 		if (name == "fullbright")
 			m_fullbright_enabled = g_settings->getBool("fullbright");
 
-		if (name == "fullbright_factor")
-			m_fullbright_factor = g_settings->getFloat("fullbright_factor", 0.0f, 1.0f);
+		if (name == "fullbright_entity_factor")
+			m_fullbright_entity_factor = g_settings->getFloat("fullbright_entity_factor", 0.0f, 1.0f);
+
+		if (name == "fullbright_node_factor")
+			m_fullbright_node_factor = g_settings->getFloat("fullbright_node_factor", 0.0f, 1.0f);
 	}
 
 	static void settingsCallback(const std::string &name, void *userdata)
@@ -153,7 +159,8 @@ public:
 		m_crack_animation_length_i = game->crack_animation_length;
 
 		m_fullbright_enabled = g_settings->getBool("fullbright");
-		m_fullbright_factor = g_settings->getFloat("fullbright_factor", 0.0f, 1.0f);
+		m_fullbright_entity_factor = g_settings->getFloat("fullbright_entity_factor", 0.0f, 1.0f);
+		m_fullbright_node_factor = g_settings->getFloat("fullbright_node_factor", 0.0f, 1.0f);
 	}
 
 	~GameGlobalShaderUniformSetter()
@@ -272,11 +279,13 @@ public:
 			m_volumetric_light_strength_pixel.set(&volumetric_light_strength, services);
 		}
 
-		if (m_fullbright_enabled)
-			m_fullbright_factor_pixel.set(&m_fullbright_factor, services);
-		else {
+		if (m_fullbright_enabled) {
+			m_fullbright_entity_factor_pixel.set(&m_fullbright_entity_factor, services);
+			m_fullbright_node_factor_pixel.set(&m_fullbright_node_factor, services);
+		} else {
 			static const float zero = 0.0f;
-			m_fullbright_factor_pixel.set(&zero, services);
+			m_fullbright_entity_factor_pixel.set(&zero, services);
+			m_fullbright_node_factor_pixel.set(&zero, services);
 		}
 	}
 

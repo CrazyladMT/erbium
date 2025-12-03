@@ -11,7 +11,7 @@ uniform lowp vec4 fogColor;
 uniform float fogDistance;
 uniform float fogShadingParameter;
 
-uniform float fullbrightFactor;
+uniform float fullbrightNodeFactor;
 
 // The cameraOffset is the current center of the visible world.
 uniform highp vec3 cameraOffset;
@@ -59,12 +59,6 @@ VARYING_ highp vec3 eyeVec;
 #ifdef ENABLE_DYNAMIC_SHADOWS
 #if (defined(ENABLE_WATER_REFLECTIONS) && MATERIAL_WATER_REFLECTIONS && ENABLE_WAVING_WATER)
 vec4 perm(vec4 x)
-{
-	return mod(((x * 34.0) + 1.0) * x, 289.0);
-}
-
-// Corresponding gradient of snoise
-vec3 gnoise(vec3 p)
 {
     vec3 a = floor(p);
     vec3 d = p - a;
@@ -466,7 +460,7 @@ void main(void)
 		base = mix(base, crack, crack.a);
 	}
 
-	vec4 col = vec4(mix(base.rgb * varColor.rgb, base.rgb, fullbrightFactor), 1.0);
+	vec4 col = vec4(mix(base.rgb * varColor.rgb, base.rgb, fullbrightNodeFactor), 1.0);
 
 #ifdef ENABLE_DYNAMIC_SHADOWS
 	// Fragment normal, can differ from vNormal which is derived from vertex normals.
