@@ -352,6 +352,9 @@ void GUIEngine::run()
 			driver->setFog(m_rendering_engine->getMenuSkyColor());
 
 			if (m_clouds_enabled) {
+				if (m_rendering_engine->getMenuStarsEnabled())
+					m_rendering_engine->drawMenuStars(driver, dtime);
+
 				drawClouds(dtime);
 				drawOverlay(driver);
 			} else {
@@ -412,7 +415,7 @@ void GUIEngine::drawClouds(float dtime)
 /******************************************************************************/
 void GUIEngine::setMainMenuCloudsColor(video::SColor& color)
 {
-m_rendering_engine->setMenuCloudsColor(color);
+	m_rendering_engine->setMenuCloudsColor(color);
 }
 
 /******************************************************************************/
@@ -421,7 +424,11 @@ void GUIEngine::setMainMenuSkyColor(video::SColor& color)
 	m_rendering_engine->setMenuSkyColor(color);
 }
 
-
+/******************************************************************************/
+void GUIEngine::setMainMenuStarsEnabled(bool enabled)
+{
+	m_rendering_engine->setMenuStarsEnabled(enabled);
+}
 
 /******************************************************************************/
 void GUIEngine::setFormspecPrepend(const std::string &fs)

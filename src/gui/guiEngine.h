@@ -265,6 +265,7 @@ private:
 
 	void setMainMenuCloudsColor(video::SColor& color);
 	void setMainMenuSkyColor(video::SColor& color);
+	void setMainMenuStarsEnabled(bool enabled);
 
 	static void fullscreenChangedCallback(const std::string &name, void *data);
 };

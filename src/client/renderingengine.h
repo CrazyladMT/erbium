@@ -8,6 +8,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <cmath>
 #include "client/inputhandler.h"
 #include "debug.h"
 #include "config.h"
@@ -140,6 +141,57 @@ public:
 	const video::SColor getMenuSkyColor();
 	const video::SColor getMenuCloudsColor();
 
+	bool getMenuStarsEnabled() const { return m_menu_stars_enabled; }
+	void setMenuStarsEnabled(bool enabled) { m_menu_stars_enabled = enabled; }
+
+	void generateMenuStars()
+	{
+		auto size = getWindowSize();
+		float scale_x = (1.0f / size.X);
+		float scale_y = (1.0f / size.Y);
+		m_menu_stars.clear();
+
+		for (int i = 0; i < 96; i++) {
+			float x = rand() % size.X * scale_x;
+			float y = rand() % size.Y * scale_y;
+			float star_size = (rand() % 8 + 4) * scale_y;
+
+			// Smuggle extra data using a 3D vector
+			m_menu_stars.push_back(core::vector3d<f32>(x, y, star_size));
+		}
+	}
+
+	void drawMenuStars(video::IVideoDriver *driver, float dtime)
+	{
+		static float star_time = 0;
+		star_time += dtime;
+		if (star_time > M_PI * 2)
+			star_time = 0.0f;
+
+		if (!m_menu_stars_enabled)
+			return;
+
+		if (driver == nullptr) 
+			return;
+
+		if (m_menu_stars.empty())
+			generateMenuStars();
+
+		auto screen_size = getWindowSize();
+		for (const auto& star : m_menu_stars)
+		{
+			// Reconstruct the original star size and position
+			s32 x = (s32)(star.X * screen_size.X);
+			s32 y = (s32)(star.Y * screen_size.Y);
+			s32 size = (s32)(star.Z * screen_size.Y);
+
+			float seed = (x * 12.9898f) + (y * 78.233f);
+			float brightness = 128 * (std::sin(star_time + seed) / 2 + 0.5f);
+
+			driver->draw2DRectangle(video::SColor(brightness + 64, 255, 255, 255), 
+									core::rect<s32>(x, y, x + size, y + size));
+		}
+	}
 
 	// FIXME: this is still global when it shouldn't be
 	static ShadowRenderer *get_shadow_renderer()
@@ -171,4 +223,6 @@ private:
 	video::IVideoDriver *driver;
 	MyEventReceiver *m_receiver = nullptr;
 	static RenderingEngine *s_singleton;
+	std::vector<core::vector3d<f32>> m_menu_stars;
+	bool m_menu_stars_enabled = true;
 };

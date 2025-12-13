@@ -317,6 +317,8 @@ void RenderingEngine::draw_load_screen(const std::wstring &text,
 		g_menucloudsmgr->drawAll();
 	}
 
+	drawMenuStars(driver, dtime);
+
 	int percent_min = 0;
 	int percent_max = percent;
 	if (indef_pos) {

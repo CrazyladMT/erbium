@@ -5,6 +5,7 @@
 
 ## MAIN MENU
 [X] Dark theme main menu
+[/] Main menu stars
 [/] Custom Menu banner
 [ ] Lua Console
 
@@ -29,6 +30,6 @@
 
 
 ## GRAPHICS
-[ ] Custom Light temperature
-[ ] Screen-Space Reflections
+[ ] Custom Artificial Light temperature
+[ ] Water Screen-Space Reflections
 [X] Fullbright
