@@ -97,9 +97,9 @@ void kelvinToRgb(video::SColorf &color, u32 kelvin)
     }
 
 	// Clamp to 0-255 then divide by 255 to get 0-1
-	color->r = (f32)std::clamp(r, 0.0, 255.0) / 255.0f;
-	color->g = (f32)std::clamp(g, 0.0, 255.0) / 255.0f;
-	color->b = (f32)std::clamp(b, 0.0, 255.0) / 255.0f;
+	color.r = (f32)std::clamp(r, 0.0, 255.0) / 255.0f;
+	color.g = (f32)std::clamp(g, 0.0, 255.0) / 255.0f;
+	color.b = (f32)std::clamp(b, 0.0, 255.0) / 255.0f;
 }
 
 class GameGlobalShaderUniformSetter : public IShaderUniformSetter
