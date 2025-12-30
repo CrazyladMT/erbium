@@ -71,30 +71,30 @@ void kelvinToRgb(video::SColorf &color, u32 kelvin)
 	double r, g, b;
 
 	if (temp <= 66.0) {
-        r = 255.0;
-    } else {
-        r = temp - 60.0;
-        r = 329.698727446 * std::pow(r, -0.1332047592);
-    }
+		r = 255.0;
+	} else {
+		r = temp - 60.0;
+		r = 329.698727446 * std::pow(r, -0.1332047592);
+	}
 
-    if (temp <= 66.0) {
-        g = temp;
-        g = 99.4708025861 * std::log(g) - 161.1195681661;
+	if (temp <= 66.0) {
+		g = temp;
+		g = 99.4708025861 * std::log(g) - 161.1195681661;
     } else {
-        g = temp - 60.0;
-        g = 288.1221695283 * std::pow(g, -0.0755148492);
-    }
+		g = temp - 60.0;
+		g = 288.1221695283 * std::pow(g, -0.0755148492);
+	}
 
-    if (temp >= 66.0) {
-        b = 255.0;
-    } else {
-        if (temp <= 19.0) {
-            b = 0.0;
-        } else {
-            b = temp - 10.0;
-            b = 138.5177312231 * std::log(b) - 305.0447927307;
-        }
-    }
+	if (temp >= 66.0) {
+		b = 255.0;
+	} else {
+		if (temp <= 19.0) 
+		    b = 0.0;
+		} else {
+			b = temp - 10.0;
+			b = 138.5177312231 * std::log(b) - 305.0447927307;
+		}
+	}
 
 	// Clamp to 0-255 then divide by 255 to get 0-1
 	color.r = (f32)std::clamp(r, 0.0, 255.0) / 255.0f;

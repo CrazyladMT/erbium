@@ -202,7 +202,7 @@ void main(void)
 	// The pre-baked colors are halved to prevent overflow.
 	// The alpha gives the ratio of sunlight in the incoming light.
 	nightRatio = 1.0 - color.a;
-	
+
 	vec3 finalLightColor = lightingColor.rgb + color.rgb; // Reduce the effect of tinting if its already bright (e.g when its in sunlight)
 
 	color.rgb = color.rgb * (color.a * dayLight.rgb +
