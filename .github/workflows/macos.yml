@@ -1,6 +1,5 @@
 name: macos
 
-# build on c/cpp changes or workflow changes
 on:
   push:
     paths:
@@ -10,7 +9,7 @@ on:
       - 'src/**.cpp'
       - 'irr/**.[ch]'
       - 'irr/**.cpp'
-      - 'irr/**.mm' # Objective-C(++)
+      - 'irr/**.mm'
       - '**/CMakeLists.txt'
       - 'cmake/Modules/**'
       - 'po/**.po'
@@ -24,7 +23,7 @@ on:
       - 'src/**.cpp'
       - 'irr/**.[ch]'
       - 'irr/**.cpp'
-      - 'irr/**.mm' # Objective-C(++)
+      - 'irr/**.mm'
       - '**/CMakeLists.txt'
       - 'cmake/Modules/**'
       - 'po/**.po'
@@ -37,21 +36,12 @@ jobs:
       matrix:
         osver: [11.3]
         xcodever: [16.2]
-        arch: ["x86_64"]
-        build_type: ["Debug"]
-        xcode: ["no"]
-        include:
-          - osver: 11.3
-            xcodever: 16.2
-            arch: "x86_64"
-            build_type: "Debug"
-            xcode: "no"
-          - osver: 11.3
-            xcodever: 16.2
-            arch: "arm64"
-            build_type: "Release"
-            xcode: "yes"
+        arch: ["x86_64", "arm64"]
+        build_type: ["Release"]
+        xcode: ["no", "yes"]
+
     runs-on: macos-15
+
     steps:
       - uses: actions/checkout@v6
 
@@ -80,7 +70,7 @@ jobs:
           ../util/ci/build_macos.sh
 
       - name: Build and Archive with Xcode
-        if: ${{matrix.xcode == 'yes'}}
+        if: ${{ matrix.xcode == 'yes' }}
         run: |
           mkdir build_xcode
           cd build_xcode
@@ -95,18 +85,17 @@ jobs:
           ./build/macos/erbium.app/Contents/MacOS/erbium --run-unittests
 
       - name: Test XCode build
-        if: ${{matrix.xcode == 'yes'}}
+        if: ${{ matrix.xcode == 'yes' }}
         run: |
           ./build_xcode/build/${build_type}/erbium.app/Contents/MacOS/erbium --run-unittests
           ./build_xcode/erbium.xcarchive/Products/Applications/erbium.app/Contents/MacOS/erbium --run-unittests
 
       - name: Diff Resources
-        if: ${{matrix.xcode == 'yes'}}
+        if: ${{ matrix.xcode == 'yes' }}
         run: |
           diff -rd ./build/macos/erbium.app/Contents/Resources ./build_xcode/build/${build_type}/erbium.app/Contents/Resources || exit 1
           diff -rd ./build/macos/erbium.app/Contents/Resources ./build_xcode/erbium.xcarchive/Products/Applications/erbium.app/Contents/Resources || exit 1
-      # Zipping the built .app preserves permissions on the contained files,
-      #   which the GitHub artifact pipeline would otherwise strip away.
+
       - name: CPack
         run: |
           cd build
