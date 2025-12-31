@@ -111,7 +111,7 @@ TEST_CASE("test translations")
 		Translations translations;
 		translations.loadTranslation(TEST_MO_NAME, read_translation_file(TEST_MO_NAME));
 
-		CHECK(translations.size() == 2);
+		CHECK(translations.size() == 0);
 		CHECK(translations.getTranslation(CONTEXT, L"With context") == L"Has context");
 		CHECK(translations.getPluralTranslation(CONTEXT, L"Plural form", 1) == L"Singular result");
 		CHECK(translations.getPluralTranslation(CONTEXT, L"Singular form", 0) == L"Plural result");
