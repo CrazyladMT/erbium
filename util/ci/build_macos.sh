@@ -50,8 +50,8 @@ fi
 cmake .. "${cmake_args[@]}"
 
 if [ "$USE_XCODE" == "yes" ]; then
-	xcodebuild -project luanti.xcodeproj -scheme luanti -configuration Release build
-	xcodebuild -project luanti.xcodeproj -scheme luanti -archivePath ./luanti.xcarchive archive
+	xcodebuild -project erbium.xcodeproj -scheme erbium -configuration Release build
+	xcodebuild -project erbium.xcodeproj -scheme erbium -archivePath ./erbium.xcarchive archive
 else
 	cmake --build . -j$(sysctl -n hw.logicalcpu)
 	make install
