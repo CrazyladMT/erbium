@@ -18,7 +18,7 @@ static std::string read_translation_file(const std::string &filename)
 
 		if (!gamespec.isValid()) {
 			warningstream << "Can't find game devtest, skipping this module." << std::endl;
-			return;
+			return "";
 		}
 
 		REQUIRE(gamespec.isValid());
