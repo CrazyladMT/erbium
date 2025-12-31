@@ -80,7 +80,7 @@ void kelvinToRgb(video::SColorf &color, u32 kelvin)
 	if (temp <= 66.0) {
 		g = temp;
 		g = 99.4708025861 * std::log(g) - 161.1195681661;
-    } else {
+	} else {
 		g = temp - 60.0;
 		g = 288.1221695283 * std::pow(g, -0.0755148492);
 	}

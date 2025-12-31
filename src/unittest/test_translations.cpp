@@ -1,6 +1,7 @@
 // Minetest
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include "test.h"
 #include "translation.h"
 #include "filesys.h"
 #include "content/subgames.h"
