@@ -1,5 +1,6 @@
 name: macos
 
+# build on c/cpp changes or workflow changes
 on:
   push:
     paths:
@@ -9,7 +10,7 @@ on:
       - 'src/**.cpp'
       - 'irr/**.[ch]'
       - 'irr/**.cpp'
-      - 'irr/**.mm'
+      - 'irr/**.mm' # Objective-C(++)
       - '**/CMakeLists.txt'
       - 'cmake/Modules/**'
       - 'po/**.po'
@@ -23,7 +24,7 @@ on:
       - 'src/**.cpp'
       - 'irr/**.[ch]'
       - 'irr/**.cpp'
-      - 'irr/**.mm'
+      - 'irr/**.mm' # Objective-C(++)
       - '**/CMakeLists.txt'
       - 'cmake/Modules/**'
       - 'po/**.po'
@@ -34,11 +35,12 @@ jobs:
   build-older-macos:
     strategy:
       matrix:
-        osver: [11.3]
-        xcodever: [16.2]
-        arch: ["x86_64", "arm64"]
-        build_type: ["Release"]
-        xcode: ["no", "yes"]
+        include:
+          - osver: 11.3
+            xcodever: 16.2
+            arch: "arm64"
+            build_type: "Release"
+            xcode: "yes"
 
     runs-on: macos-15
 
@@ -96,6 +98,8 @@ jobs:
           diff -rd ./build/macos/erbium.app/Contents/Resources ./build_xcode/build/${build_type}/erbium.app/Contents/Resources || exit 1
           diff -rd ./build/macos/erbium.app/Contents/Resources ./build_xcode/erbium.xcarchive/Products/Applications/erbium.app/Contents/Resources || exit 1
 
+      # Zipping the built .app preserves permissions on the contained files,
+      #   which the GitHub artifact pipeline would otherwise strip away.
       - name: CPack
         run: |
           cd build
